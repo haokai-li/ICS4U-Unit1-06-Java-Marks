@@ -8,6 +8,7 @@
 */
 
 import java.io.BufferedReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
@@ -116,14 +117,20 @@ final class Marks {
         System.out.println("\nCalculating stats...");
         final String[][] generateMarks = generateMarks(
             arrayOfStudents, arrayOfAssignments);
+        try {
+            final FileWriter writer = new FileWriter("../marks.csv");
 
-        for (int iLoop = 0; iLoop < arrayOfStudents.length + 1; iLoop++) {
-            for (int eLoop = 0;
-                eLoop < arrayOfAssignments.length + 1; eLoop++) {
-                System.out.print(generateMarks[iLoop][eLoop]);
-                System.out.print(" ");
+            for (int iLoop = 0; iLoop < arrayOfStudents.length + 1; iLoop++) {
+                for (int eLoop = 0;
+                    eLoop < arrayOfAssignments.length + 1; eLoop++) {
+                    writer.append(generateMarks[iLoop][eLoop]);
+                    writer.append(", ");
+                }
+                writer.append("\n");
             }
-            System.out.println("");
+            writer.close();
+        } catch (IOException errorCode) {
+            System.err.println(errorCode);
         }
 
         System.out.println("\nDone.");
